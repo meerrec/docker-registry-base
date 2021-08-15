@@ -1,0 +1,28 @@
+version: "3.4"
+
+# Docker registry UI
+
+services:
+  docker-registry:
+    image: registry:2
+    volumes:
+      - registry-vol:/var/lib/registry
+    ports:
+      - 5000:5000
+
+  docker-registry-ui:
+    image: parabuzzle/craneoperator:latest
+    ports:
+      - "8086:80"
+    environment:
+      - REGISTRY_HOST
+      - REGISTRY_PORT
+      - REGISTRY_PROTOCOL
+      - REGISTRY_SSL_VERIFY
+      - REGISTRY_USERNAME
+      - REGISTRY_PASSWORD
+    restart: always
+    depends_on:
+      - docker-registry
+volumes:
+  registry-vol:
